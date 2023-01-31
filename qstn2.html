@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know more about Countries </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+<body  style="background-image: url('./bg_img2.webp');">
+
+<div class="container">
+
+    <input type="text" id="countryApi" class="form-control m-3" placeholder="Enter the country name"  >
+    <button class="bg-primary text-bg-light mb-3" onclick="checkCountries();">submit</button>
+  
+  <div class="card " style="width: 18rem; text-align: center;">
+
+  </div>
+
+</div>
+  <script>
+            document.querySelector(".card").style.display = "none";
+
+          
+          function checkCountries(){
+
+            let country_name = document.getElementById("countryApi").value
+
+        fetch(`https://restcountries.com/v2/name/${country_name}?fullText=true`)
+        .then( (dataFrmser) => dataFrmser.json())
+        .then((country) =>{ 
+            countryDetails(country)
+    
+        })
+        .catch((er) => console.log(er));
+
+    function countryDetails(countryList){
+
+        let country_flag    =  countryList[0].flags.svg;
+        let country_name    =  countryList[0].name;
+        let population      =  countryList[0].population;
+        let capital         =  countryList[0].capital;
+        let language        =  countryList[0].languages[0].name;
+        let currency_name   =  countryList[0].currencies[0].name;
+        let currency_symbol =  countryList[0].currencies[0].symbol;
+
+        console.log(countryList);
+
+
+
+        let htmlChange = `
+            <img src='${country_flag}'' class='card-img-top w-100' alt='#'>
+        <div class="card-body">
+            <pclass="card-title">${country_name}</p>
+            <p class="popltn"><b>population :</b> ${population}</p>
+            <p class="capital"><b>capital : </b>${capital}</p>
+            <p class="langug"><b>language : </b>${language}</p>
+            <p class ="curncy"><b>currency : </b>${currency_name}</p>
+            <p class="symbl"><b>currency symbol : </b>${currency_symbol}</p>
+            </div>`
+
+        document.querySelector(".card").innerHTML = htmlChange;
+
+        document.querySelector(".card").style.display = "block";
+        }
+
+    }
+
+            
+  </script>
+</body>
+</html>

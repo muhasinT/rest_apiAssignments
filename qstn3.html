@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Api</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+  <div style="text-align: center; background: rgb(32, 0, 129); color: aliceblue;" >
+    <h2 >Checking weather updates</h2>
+
+    Enter a city name:
+    <input type="text" id="weatherApi" name="weatherApi" >
+    <button onclick="checkWeather();">check</button>
+  </div>
+   
+  <div class="text-bg-secondary">
+
+    <section class="vh-100"id="displayWeather" style="background-color: #f5f6f7; display: block;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-10 col-lg-8 col-xl-6">
+      
+              <div class="card bg-dark text-white" style="border-radius: 40px;">
+                <div class="bg-image" style="border-radius: 35px;">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/draw1.webp"
+                    class="card-img" alt="weather" />
+                  <div class="mask" style="background-color: rgba(190, 216, 232, .5);"></div>
+                </div>
+                <div class="card-img-overlay text-dark p-5">
+                  <h4 class="mb-0 city" ></h4>
+                  <p class="display-2 my-3 temp"></p>
+                 <h5 class="snow"></h5>
+                  <h5 class="wind" style="font-size: large;"></h5>
+                  <h5 class="mintemp"></h5>
+
+
+                </div>
+              </div>
+      
+            </div>
+          </div>
+        </div>
+      </section>
+  </div>
+
+    <script>
+
+document.getElementById("displayWeather").style.display = "none";
+
+
+         function checkWeather (){
+            let cityName;
+            let city = document.getElementById("weatherApi").value;
+          
+                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=2ffed45d1b0ea4624910220d559a6697`)
+
+                .then( (dataSer) =>  dataSer.json())
+                .then( (weather) => {
+                console.log(weather);
+
+                let kelvin=  weather.main.temp;
+                  let celsius = kelvin - 273.15;
+                   celsius = celsius.toFixed(2);
+                
+                let tempkel = weather.main.temp_min;
+                  let temp_min =  kelvin - 273.15;
+                      temp_min = temp_min.toFixed(2);
+
+                let tempkelv = weather.main.temp_max;
+                  let temp_max =  kelvin - 273.15;
+                      temp_max = temp_max.toFixed(2);
+
+                    document.getElementById("displayWeather").style.display = "block";
+
+                    document.querySelector(".city").innerHTML = weather.name;
+                    document.querySelector(".temp").innerHTML = celsius + "°C";
+                    document.querySelector(".snow").innerHTML = weather.weather[0].main;
+                    document.querySelector(".wind").innerHTML = "windspeed:"+weather.wind.speed + "km/s";
+                    document.querySelector(".mintemp").innerHTML = "temp minimum:" + temp_min + "°C";
+                    document.querySelector(".mintemp").innerHTML = "temp maximum:" + temp_max + "°C";
+
+        
+
+
+                })
+                
+
+               
+            }
+              
+    </script>
+    
+</body>
+</html>
